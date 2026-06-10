@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background: #0b0b10;
+    font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.vertical-list-scroll {
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+.vertical-list-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+.vertical-list-scroll::-webkit-scrollbar-track {
+    background: #23232b;
+    border-radius: 8px;
+}
+.vertical-list-scroll::-webkit-scrollbar-thumb {
+    background: #4a4a5a;
+    border-radius: 8px;
+}
+.item-card-stack {
+    background: #1c1c24;
+    transition: all 0.1s ease;
+    border: 1px solid #2c2c34;
+}
+.item-card-stack:hover {
+    background: #262630;
+    transform: translateX(3px);
+}
+.wheel-container canvas {
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.5));
+    cursor: pointer;
+}
+.modal-overlay {
+    background: rgba(6, 6, 10, 0.85);
+    backdrop-filter: blur(4px);
+}
+button:active {
+    transform: scale(0.96);
+}
+input.weight-input {
+    background: #0f0f14;
+    border: 1px solid #33333e;
+    color: #e2e2e8;
+    padding: 4px 8px;
+    border-radius: 12px;
+    width: 70px;
+    text-align: center;
+    font-size: 0.8rem;
+}
+input.weight-input:focus {
+    outline: none;
+    border-color: #6b6b8b;
+}
+/* remove emoji replacements, pure text */
+.no-emoji {
+    font-style: normal;
+}

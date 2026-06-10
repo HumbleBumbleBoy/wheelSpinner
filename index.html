@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Speen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-gray-200">
+
+    <div class="h-screen flex flex-col p-4 md:p-5 max-w-[1600px] mx-auto">
+        
+        <!-- empty header spacer -->
+        <div class="flex flex-wrap justify-between items-center gap-3 pb-3 border-b border-gray-700/50 mb-4">
+            <div class="flex items-center gap-3"></div>
+        </div>
+        
+        <!-- MAIN LAYOUT: left weights | middle wheel + dropdown above wheel | right list 25% -->
+        <div class="flex flex-1 gap-4 min-h-0 overflow-hidden">
+            <!-- LEFT PANEL: weight chances (compact number inputs) -->
+            <div class="w-[170px] md:w-[190px] shrink-0 bg-[#121217] rounded-2xl border border-[#26262e] p-3 flex flex-col overflow-y-auto">
+                <div class="flex items-center gap-2 mb-3 text-xs font-semibold border-b border-gray-700/40 pb-2">
+                    <span>Chances (weight)</span>
+                </div>
+                <div id="weightsContainer" class="space-y-3 text-sm">
+                    <div class="text-center text-gray-500 py-4 text-[11px]">add items first</div>
+                </div>
+            </div>
+            
+            <!-- MIDDLE: WHEEL section (dropdown above wheel, centred) -->
+            <div class="flex-1 flex flex-col items-center justify-center relative min-w-0">
+                <!-- wheel selector placed directly above the wheel, centered -->
+                <button id="resetBtn" class="mt-4 bg-amber-800/50 hover:bg-amber-700/70 text-xs px-4 py-1.5 mb-2 rounded-xl transition flex gap-2 items-center">
+                    Reset to defaults
+                </button>
+                <div class="relative inline-block w-56 mb-4 z-10" id="dropdownWrapper">
+                    <button id="dropdownBtn" class="w-full flex justify-between items-center bg-[#17171f] border border-[#34343e] rounded-xl px-3 py-2 text-sm font-medium hover:bg-[#23232b] transition">
+                        <span id="selectedWheelLabel" class="truncate">Default List</span>
+                        <i class="fa-solid fa-chevron-down text-[11px]"></i>
+                    </button>
+                    <div id="dropdownMenu" class="absolute left-0 right-0 mt-2 bg-[#15151c] border border-[#2c2c36] rounded-xl shadow-xl z-30 hidden flex-col max-h-64 overflow-y-auto">
+                        <div id="wheelTypesList" class="py-1 overflow-y-auto"></div>
+                        <div class="border-t border-[#2a2a32] p-2 sticky bottom-0 bg-[#15151c] rounded-b-xl">
+                            <button id="addWheelTypeBtn" class="w-full text-left text-xs flex items-center gap-2 px-3 py-1.5 rounded-lg text-indigo-300 hover:bg-[#2a2a32] transition">
+                                <i class="fa-regular fa-plus"></i>
+                                <span>Add new wheel</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- wheel canvas -->
+                <div class="wheel-container flex justify-center items-center w-full">
+                    <canvas id="wheelCanvas" width="540" height="540" class="rounded-full shadow-2xl" style="width: 100%; height: auto; max-width: 520px; aspect-ratio: 1/1;"></canvas>
+                </div>
+            </div>
+            
+            <!-- RIGHT PANEL: item list (25% width, vertical stacked cards) -->
+            <div class="w-[25%] min-w-[220px] bg-[#121217] rounded-2xl border border-[#26262e] flex flex-col p-3 shadow-md">
+                <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                    <h3 class="font-medium text-sm flex gap-2 items-center">Items <span id="itemCountBadge" class="bg-gray-700/70 text-[11px] px-2 py-0.5 rounded-full">0</span></h3>
+                    <div class="flex gap-2">
+                        <button id="importFileBtn" class="bg-emerald-800/50 hover:bg-emerald-700/70 text-xs px-3 py-1.5 rounded-xl transition flex gap-1 items-center"><i class="fa-regular fa-file-lines"></i> .txt</button>
+                        <button id="addItemGlobalBtn" class="bg-indigo-700/60 hover:bg-indigo-600 text-xs px-3 py-1.5 rounded-xl transition flex gap-1 items-center"><i class="fa-regular fa-plus"></i> Card</button>
+                    </div>
+                </div>
+                <!-- vertical list of items -->
+                <div id="itemsListContainer" class="flex flex-col gap-2 overflow-y-auto vertical-list-scroll pr-1" style="max-height: calc(100% - 60px);">
+                    <div class="text-center text-gray-500 py-8 text-xs">No items — add card or import .txt</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL for spin result (keep/remove) -->
+    <div id="resultModal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-200">
+        <div class="bg-[#181820] rounded-2xl p-6 w-80 max-w-[90%] shadow-2xl border border-gray-600/60 text-center">
+            <i class="fa-solid fa-wheel-of-dharma text-2xl text-indigo-400 mb-2"></i>
+            <h3 id="modalItemName" class="text-xl font-bold my-2 break-words">Item</h3>
+            <p class="text-gray-300 text-sm mb-4">remove or keep?</p>
+            <div class="flex gap-3 justify-center">
+                <button id="modalKeepBtn" class="bg-emerald-800/60 hover:bg-emerald-700 px-5 py-2 rounded-xl transition text-sm">Keep</button>
+                <button id="modalRemoveBtn" class="bg-rose-800/60 hover:bg-rose-700 px-5 py-2 rounded-xl transition text-sm">Remove</button>
+            </div>
+        </div>
+    </div>
+  
+  <!-- hidden file input for txt import -->
+  <input type="file" id="txtFileInput" accept=".txt" class="hidden" />
+
+    <script src="./main.js"></script>
+</body>
+</html>
