@@ -1,1 +1,1 @@
-(page)[https://humblebumbleboy.github.io/wheelSpinner/]
+[page](https://humblebumbleboy.github.io/wheelSpinner/)
